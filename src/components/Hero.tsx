@@ -95,41 +95,43 @@ const Hero: React.FC = () => {
   return (
     <section
       ref={heroRef}
-      className="relative flex items-center justify-center h-screen bg-white text-black overflow-hidden"
+      className="relative flex items-center justify-center min-h-screen bg-white text-black overflow-hidden"
     >
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center p-8 z-10">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center p-4 sm:p-8 z-10">
         <div className="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
           <h1
             ref={titleRef}
-            className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight text-orange-600"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight text-orange-600"
           >
             Rida Rasheed
           </h1>
           <p
             ref={subtitleRef}
-            className="text-xl md:text-2xl mb-2 max-w-2xl md:mx-0 mx-auto"
+            className="text-lg sm:text-xl md:text-2xl mb-2 max-w-2xl md:mx-0 mx-auto"
           >
             Web Developer
           </p>
-          <p ref={paragraphRef} className="text-lg md:text-xl mb-8 max-w-2xl md:mx-0 mx-auto text-gray-700">
+          <p ref={paragraphRef} className="text-base sm:text-lg md:text-xl mb-8 max-w-2xl md:mx-0 mx-auto text-gray-700">
             Passionate about crafting engaging web experiences with a focus on modern technologies and clean code.
           </p>
           <button
             ref={buttonRef}
-            className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full text-lg hover:bg-blue-700 transition-colors duration-300"
+            className="px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-bold rounded-full text-base sm:text-lg hover:bg-blue-700 transition-colors duration-300"
           >
             Explore My Work
           </button>
         </div>
         <div className="w-full md:w-1/2 flex justify-center items-center">
-          <Image
-            ref={avatarRef}
-            src="/images/redhaired-woman-avatar.jpg"
-            alt="Rida Rasheed Avatar"
-            width={600}
-            height={600}
-            className="max-w-full h-auto rounded-full object-cover"
-          />
+          <div className="w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px] lg:w-[600px] lg:h-[600px]">
+            <Image
+              ref={avatarRef}
+              src="/images/redhaired-woman-avatar.jpg"
+              alt="Rida Rasheed Avatar"
+              width={600}
+              height={600}
+              className="w-full h-full rounded-full object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
