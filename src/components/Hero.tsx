@@ -1,9 +1,10 @@
 "use client";
 
+import SplitType from 'split-type';
 import React, { useRef, useEffect } from 'react';
-import Image from 'next/image'; // Added Image import
+import Image from 'next/image';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger'; // Updated import path
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,42 +13,57 @@ const Hero: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const avatarRef = useRef<HTMLImageElement>(null); // Ref for the avatar
+  const avatarRef = useRef<HTMLImageElement>(null);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    if (heroRef.current && titleRef.current && subtitleRef.current && buttonRef.current && avatarRef.current) {
-      // Staggered text animation
-      gsap.fromTo([titleRef.current, subtitleRef.current],
+    if (heroRef.current && titleRef.current && subtitleRef.current && buttonRef.current && avatarRef.current && paragraphRef.current) {
+      // Split text animation for the title
+      const splitTitle = new SplitType(titleRef.current, { types: 'chars' });
+      gsap.from(splitTitle.chars, {
+        opacity: 0,
+        y: 50,
+        stagger: 0.05,
+        duration: 0.5,
+        ease: 'power3.out',
+      });
+
+      // Staggered text animation for subtitle and paragraph
+      gsap.fromTo([subtitleRef.current, paragraphRef.current],
         { opacity: 0, x: -50 },
         {
           opacity: 1,
           x: 0,
           duration: 1,
           ease: 'power3.out',
-          stagger: 0.2, // Animate one after the other
+          stagger: 0.2,
+          delay: 0.5,
         }
       );
 
       // Button scale animation
       gsap.fromTo(buttonRef.current,
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: 1, delay: 0.8, ease: 'power3.out' }
+        { opacity: 1, scale: 1, duration: 1, delay: 1, ease: 'power3.out' }
       );
 
-      // Avatar parallax effect
+      // Avatar parallax, scale, and rotation effect
       gsap.fromTo(avatarRef.current,
-        { y: 0 },
+        { y: 0, scale: 1, rotation: 0 },
         {
-          y: -50,
+          y: -100,
+          scale: 1.1,
+          rotation: 5,
           scrollTrigger: {
             trigger: heroRef.current,
             start: 'top top',
             end: 'bottom top',
-            scrub: true, // Smoothly animate on scroll
+            scrub: true,
           },
         }
       );
 
+      // Pin the hero section
       ScrollTrigger.create({
         trigger: heroRef.current,
         start: 'top top',
@@ -55,6 +71,16 @@ const Hero: React.FC = () => {
         pin: true,
         pinSpacing: false,
       });
+
+      // Button hover animation
+      if (buttonRef.current) {
+        buttonRef.current.addEventListener('mouseenter', () => {
+          gsap.to(buttonRef.current, { scale: 1.1, duration: 0.3 });
+        });
+        buttonRef.current.addEventListener('mouseleave', () => {
+          gsap.to(buttonRef.current, { scale: 1, duration: 0.3 });
+        });
+      }
     }
   }, []);
 
@@ -64,37 +90,37 @@ const Hero: React.FC = () => {
       className="relative flex items-center justify-center h-screen bg-white text-black overflow-hidden"
     >
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between p-8 z-10">
-        {/* Left Section: Text Content */}
         <div className="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
           <h1
             ref={titleRef}
-            className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight"
+            className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight text-orange-600"
           >
             Rida Rasheed
           </h1>
           <p
             ref={subtitleRef}
-            className="text-xl md:text-2xl mb-8 max-w-2xl md:mx-0 mx-auto"
+            className="text-xl md:text-2xl mb-2 max-w-2xl md:mx-0 mx-auto"
           >
             Web Developer
           </p>
+          <p ref={paragraphRef} className="text-lg md:text-xl mb-8 max-w-2xl md:mx-0 mx-auto text-gray-700">
+            Passionate about crafting engaging web experiences with a focus on modern technologies and clean code.
+          </p>
           <button
             ref={buttonRef}
-            className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full text-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105"
+            className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full text-lg hover:bg-blue-700 transition-colors duration-300"
           >
             Explore My Work
           </button>
         </div>
-
-        {/* Right Section: Avatar */}
         <div className="md:w-1/2 flex justify-center md:justify-end">
           <Image
-            ref={avatarRef} // Added ref to the avatar
-            src="/images/avatar.svg"
+            ref={avatarRef}
+            src="/images/redhaired-woman-avatar.jpg"
             alt="Rida Rasheed Avatar"
-            width={400}
-            height={400}
-            className="max-w-full h-auto"
+            width={500}
+            height={500}
+            className="max-w-full h-auto rounded-full object-cover"
           />
         </div>
       </div>
