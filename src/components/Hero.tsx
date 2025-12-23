@@ -47,12 +47,20 @@ const Hero: React.FC = () => {
         { opacity: 1, scale: 1, duration: 1, delay: 1, ease: 'power3.out' }
       );
 
-      // Avatar parallax, scale, and rotation effect
+      // Avatar breathing effect
+      gsap.to(avatarRef.current, {
+        scale: 1.05,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut',
+      });
+
+      // Avatar parallax, scale, and rotation effect on scroll
       gsap.fromTo(avatarRef.current,
-        { y: 0, scale: 1, rotation: 0 },
+        { y: 0, rotation: 0 },
         {
           y: -100,
-          scale: 1.1,
           rotation: 5,
           scrollTrigger: {
             trigger: heroRef.current,
@@ -89,7 +97,7 @@ const Hero: React.FC = () => {
       ref={heroRef}
       className="relative flex items-center justify-center h-screen bg-white text-black overflow-hidden"
     >
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between p-8 z-10">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center p-8 z-10">
         <div className="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
           <h1
             ref={titleRef}
@@ -113,13 +121,13 @@ const Hero: React.FC = () => {
             Explore My Work
           </button>
         </div>
-        <div className="md:w-1/2 flex justify-center md:justify-end">
+        <div className="w-full md:w-1/2 flex justify-center items-center">
           <Image
             ref={avatarRef}
             src="/images/redhaired-woman-avatar.jpg"
             alt="Rida Rasheed Avatar"
-            width={500}
-            height={500}
+            width={600}
+            height={600}
             className="max-w-full h-auto rounded-full object-cover"
           />
         </div>
