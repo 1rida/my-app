@@ -8,6 +8,13 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+const navLinks = [
+  { href: '#about', label: 'About' },
+  { href: '#services', label: 'Services' },
+  { href: '#process', label: 'Skills' },
+  { href: '#contact', label: 'Contact' },
+];
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -34,17 +41,12 @@ export default function Header() {
     }
   };
 
-  const navLinks = [
-    { href: '#about', label: 'About' },
-    { href: '#services', label: 'Services' },
-    { href: '#process', label: 'Skills' },
-    { href: '#contact', label: 'Contact' },
-  ];
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const scrollTriggers: ScrollTrigger[] = [];
+      
       navLinks.forEach((link) => {
-        ScrollTrigger.create({
+        const st = ScrollTrigger.create({
           trigger: link.href,
           start: 'top center',
           end: 'bottom center',
@@ -54,7 +56,12 @@ export default function Header() {
             }
           },
         });
+        scrollTriggers.push(st);
       });
+
+      return () => {
+        scrollTriggers.forEach(st => st.kill());
+      };
     }
   }, []);
 

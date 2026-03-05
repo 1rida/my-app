@@ -91,10 +91,10 @@ const ContactUs: React.FC = () => {
           <div ref={detailsRef} className="flex flex-col space-y-8">
             <div className="space-y-4">
               <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                Let's <span className="text-orange-500">Connect</span>
+                Let&apos;s <span className="text-orange-500">Connect</span>
               </h3>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                Have a project in mind or just want to say hi? I'm always open to discussing new opportunities, creative ideas, or being part of your visions.
+                Have a project in mind or just want to say hi? I&apos;m always open to discussing new opportunities, creative ideas, or being part of your visions.
               </p>
             </div>
 
@@ -136,7 +136,7 @@ const ContactUs: React.FC = () => {
 
             <div className="p-6 bg-orange-500/10 border border-orange-500/20 rounded-2xl">
               <p className="text-orange-500 font-medium italic">
-                "I believe in the power of technology to change the world and I am excited to be a part of it."
+                &quot;I believe in the power of technology to change the world and I am excited to be a part of it.&quot;
               </p>
             </div>
           </div>

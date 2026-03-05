@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
           </h1>
           <p className="text-md sm:text-lg text-gray-300">
             I craft beautiful and functional web applications, blending
-            cutting-edge technology with user-centric design. Let's build
+            cutting-edge technology with user-centric design. Let&apos;s build
             something amazing together.
           </p>
           <div className="flex items-center justify-center lg:justify-start space-x-6">
