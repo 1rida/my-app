@@ -86,7 +86,7 @@ const Process: React.FC = () => {
           {processSteps.map((step, index) => (
             <React.Fragment key={index}>
               <div
-                ref={(el) => (stepsRef.current[index] = el)}
+                ref={(el) => { stepsRef.current[index] = el; }}
                 className="text-center p-6 bg-foreground/5 rounded-lg"
               >
                 <div className="flex justify-center mb-4">

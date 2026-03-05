@@ -98,7 +98,7 @@ export default function Services() {
           {services.map((service, index) => (
             <div
               key={index}
-              ref={(el) => (cardsRef.current[index] = el)}
+              ref={(el) => { cardsRef.current[index] = el; }}
               className="group bg-gray-800 rounded-xl overflow-hidden relative"
             >
               <div className="overflow-hidden h-96">
