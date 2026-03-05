@@ -1,130 +1,116 @@
 "use client";
+import React, { useState, useEffect, useRef } from 'react';
+import { Menu, X } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
-import React, { useRef, useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { gsap } from 'gsap';
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-const Header: React.FC = () => {
-  const headerRef = useRef<HTMLElement>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
+export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const [activeLink, setActiveLink] = useState('');
 
   useEffect(() => {
-    gsap.fromTo(
-      headerRef.current,
-      { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-    );
+    if (isMenuOpen) {
+      gsap.fromTo(mobileMenuRef.current, { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' });
+    } else if (mobileMenuRef.current) {
+        gsap.to(mobileMenuRef.current, { y: -20, opacity: 0, duration: 0.3, ease: 'power2.in' });
+    }
+  }, [isMenuOpen]);
 
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
+    e.preventDefault();
+    setIsMenuOpen(false);
+    if (typeof window !== 'undefined') {
+      gsap.to(window, {
+        scrollTo: { y: href, offsetY: 80, autoKill: false },
+        duration: 1,
+        ease: 'power2.inOut',
+      });
+      setActiveLink(href);
+    }
+  };
 
-    window.addEventListener('scroll', handleScroll);
+  const navLinks = [
+    { href: '#about', label: 'About' },
+    { href: '#services', label: 'Services' },
+    { href: '#process', label: 'Skills' },
+    { href: '#contact', label: 'Contact' },
+  ];
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      navLinks.forEach((link) => {
+        ScrollTrigger.create({
+          trigger: link.href,
+          start: 'top center',
+          end: 'bottom center',
+          onToggle: (self) => {
+            if (self.isActive) {
+              setActiveLink(link.href);
+            }
+          },
+        });
+      });
+    }
   }, []);
 
   return (
-    <header
-      ref={headerRef}
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/80 backdrop-blur-sm shadow-md'
-          : 'bg-transparent'
-      }`}
-    >
+    <header className="fixed top-0 z-50 w-full bg-white dark:bg-black/80 backdrop-blur-sm shadow-sm transition-all duration-300 border-b border-gray-200 dark:border-gray-800">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Left section - Logo */}
-        <div className="flex-shrink-0">
-          <Link className="flex items-center space-x-2" href="/">
-            <Image
-              alt="My Logo"
-              className="object-contain rounded-full"
-              height={40}
-              src="/images/avatar.svg"
-              width={40}
-            />
-            <span className="text-xl font-bold text-gray-800">MyPortfolio</span>
-          </Link>
-        </div>
+       
+        {/* Center section - Navigation */}
+        <nav className="hidden md:flex flex-1 justify-center items-center space-x-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => handleLinkClick(e, link.href)}
+              className={`group text-sm font-medium transition-colors duration-300 cursor-pointer ${activeLink === link.href ? 'text-orange-500' : 'text-gray-600 dark:text-gray-300 hover:text-orange-500'}`}
+            >
+              {link.label}
+              <span className={`block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-orange-500 ${activeLink === link.href ? 'max-w-full' : ''}`}></span>
+            </a>
+          ))}
+        </nav>
 
-        {/* Center section - Navigation links for medium screens and up */}
-        <div className="hidden md:flex flex-1 justify-center items-center space-x-6">
-          <Link
-            className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-            href="#about"
-          >
-            About
-          </Link>
-          <Link
-            className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-            href="#projects"
-          >
-            Projects
-          </Link>
-          <Link
-            className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors duration-300"
-            href="#contact"
-          >
-            Contact
-          </Link>
-        </div>
-
-        {/* Right section - Hamburger menu for small screens */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-          >
-            <span className="sr-only">Open main menu</span>
-            {isMenuOpen ? (
-              <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            )}
-          </button>
+        {/* Right section - Actions */}
+        <div className="flex items-center space-x-4">
+          <ThemeSwitcher />
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className="p-2 text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
-      {isMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link
-              className="text-gray-600 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-              href="#about"
+      {/* Mobile Menu */}
+      <div 
+        ref={mobileMenuRef} 
+        className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800`}
+      >
+        <nav className="px-4 pt-2 pb-6 space-y-2">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => handleLinkClick(e, link.href)}
+              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${activeLink === link.href ? 'text-orange-500 bg-orange-50/10' : 'text-gray-700 dark:text-gray-300 hover:text-orange-500'}`}
             >
-              About
-            </Link>
-            <Link
-              className="text-gray-600 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-              href="#projects"
-            >
-              Projects
-            </Link>
-            <Link
-              className="text-white bg-blue-600 hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium"
-              href="#contact"
-            >
-              Contact
-            </Link>
-          </div>
-        </div>
-      )}
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      </div>
     </header>
   );
-};
-
-export default Header;
+}

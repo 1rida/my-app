@@ -1,0 +1,42 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="tech-grad" cx="50%" cy="50%" r="50%" fx="90%" fy="50%">
+      <stop offset="0%" style="stop-color:#002244;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#tech-grad)" />
+
+  <g opacity="0.5" filter="url(#glow)">
+    <path d="M 1200,100 C 1500,300 1600,700 1400,900" stroke="#00ffff" stroke-width="2" fill="none" />
+    <path d="M 1300,150 C 1550,350 1650,650 1450,850" stroke="#00ffff" stroke-width="1" fill="none" stroke-dasharray="5,5"/>
+    <path d="M 1100,250 C 1400,450 1500,750 1300,950" stroke="#00aaff" stroke-width="1" fill="none" />
+
+    <circle cx="1200" cy="100" r="5" fill="#00ffff" />
+    <circle cx="1500" cy="300" r="3" fill="#00ffff" />
+    <circle cx="1600" cy="700" r="4" fill="#00ffff" />
+    <circle cx="1400" cy="900" r="5" fill="#00ffff" />
+
+    <circle cx="1300" cy="150" r="3" fill="#00aaff" />
+    <circle cx="1550" cy="350" r="2" fill="#00aaff" />
+    <circle cx="1650" cy="650" r="3" fill="#00aaff" />
+    <circle cx="1450" cy="850" r="4" fill="#00aaff" />
+
+    <circle cx="1100" cy="250" r="4" fill="#00ffff" />
+    <circle cx="1400" cy="450" r="3" fill="#00ffff" />
+    <circle cx="1500" cy="750" r="5" fill="#00ffff" />
+    <circle cx="1300" cy="950" r="3" fill="#00ffff" />
+
+    <line x1="1200" y1="100" x2="1300" y2="150" stroke="#00ffff" stroke-width="1" />
+    <line x1="1500" y1="300" x2="1550" y2="350" stroke="#00ffff" stroke-width="1" />
+    <line x1="1600" y1="700" x2="1650" y2="650" stroke="#00ffff" stroke-width="1" />
+    <line x1="1400" y1="900" x2="1450" y2="850" stroke="#00ffff" stroke-width="1" />
+  </g>
+</svg>

@@ -1,74 +1,146 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
+import Wave from './ui/Wave';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ContactUs: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+  useEffect(() => {
+    if (sectionRef.current) {
+      gsap.fromTo(
+        sectionRef.current.querySelector('h2'),
+        { opacity: 0, y: -50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
 
-    try {
-      const res = await fetch('/api/gemini', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, message }),
-      });
+      gsap.fromTo(
+        imageRef.current,
+        { opacity: 0, x: -100 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: imageRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'Something went wrong');
-      }
-
-      setSuccess(true);
-      setName('');
-      setEmail('');
-      setMessage('');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      gsap.fromTo(
+        detailsRef.current,
+        { opacity: 0, x: 100 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: detailsRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
     }
-  };
+  }, []);
 
   return (
-    <section className="bg-white py-16 sm:py-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-          Contact Us
+    <section ref={sectionRef} id="contact" className="relative bg-white dark:bg-gray-900 text-gray-900 dark:text-white overflow-hidden py-16 lg:py-24">
+      <div className="absolute top-0 left-0 w-full z-0 opacity-20 dark:opacity-10">
+        <Wave />
+      </div>
+      
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 z-10">
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 text-gray-900 dark:text-white">
+          Get In <span className="text-orange-500">Touch</span>
         </h2>
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-700">Name</label>
-            <input type="text" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Side - Image */}
+          <div ref={imageRef} className="relative h-[300px] sm:h-[400px] lg:h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] duration-500">
+            <Image
+              src="/images/contact-image.jpg"
+              alt="Contact Support Concept"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-transparent pointer-events-none" />
           </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-700">Email</label>
-            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+          {/* Right Side - Details */}
+          <div ref={detailsRef} className="flex flex-col space-y-8">
+            <div className="space-y-4">
+              <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                Let's <span className="text-orange-500">Connect</span>
+              </h3>
+              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                Have a project in mind or just want to say hi? I'm always open to discussing new opportunities, creative ideas, or being part of your visions.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <a 
+                href="mailto:ridarasheed58@gmail.com" 
+                className="group flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl hover:bg-orange-500 dark:hover:bg-orange-500 transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="p-3 bg-orange-500 rounded-lg group-hover:bg-white transition-colors">
+                  <FaEnvelope className="w-6 h-6 text-white group-hover:text-orange-500" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-orange-100 transition-colors">Email Me</p>
+                  <p className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-white transition-colors">ridarasheed58@gmail.com</p>
+                </div>
+              </a>
+
+              <div className="flex space-x-4 pt-4">
+                <a
+                  href="https://github.com/1rida"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center p-4 bg-gray-900 text-white rounded-xl hover:bg-orange-500 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <FaGithub size={24} className="mr-2" />
+                  <span className="font-bold">GitHub</span>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/rida-rasheed-8638402b5/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center p-4 bg-[#0077b5] text-white rounded-xl hover:bg-orange-500 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <FaLinkedin size={24} className="mr-2" />
+                  <span className="font-bold">LinkedIn</span>
+                </a>
+              </div>
+            </div>
+
+            <div className="p-6 bg-orange-500/10 border border-orange-500/20 rounded-2xl">
+              <p className="text-orange-500 font-medium italic">
+                "I believe in the power of technology to change the world and I am excited to be a part of it."
+              </p>
+            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-700">Message</label>
-            <textarea id="message" name="message" value={message} onChange={(e) => setMessage(e.target.value)} rows={4} className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-          </div>
-          <div className="text-center">
-            <button type="submit" disabled={loading} className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-500">
-              {loading ? 'Sending...' : 'Submit'}
-            </button>
-          </div>
-          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-          {success && <p className="text-green-500 text-center mt-4">Message sent successfully!</p>}
-        </form>
+        </div>
       </div>
     </section>
   );

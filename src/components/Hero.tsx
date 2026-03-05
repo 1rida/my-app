@@ -1,136 +1,214 @@
 "use client";
 
-import SplitType from 'split-type';
-import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
+import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaGithub, FaLinkedin, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Hero: React.FC = () => {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const avatarRef = useRef<HTMLImageElement>(null);
-  const paragraphRef = useRef<HTMLParagraphElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const centerColRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+  const logoContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (heroRef.current && titleRef.current && subtitleRef.current && buttonRef.current && avatarRef.current && paragraphRef.current) {
-      // Split text animation for the title
-      const splitTitle = new SplitType(titleRef.current, { types: 'chars' });
-      gsap.from(splitTitle.chars, {
-        opacity: 0,
-        y: 50,
-        stagger: 0.05,
-        duration: 0.5,
-        ease: 'power3.out',
-      });
+    if (
+      !sectionRef.current ||
+      !leftColRef.current ||
+      !centerColRef.current ||
+      !rightColRef.current
+    ) {
+      return;
+    }
 
-      // Staggered text animation for subtitle and paragraph
-      gsap.fromTo([subtitleRef.current, paragraphRef.current],
-        { opacity: 0, x: -50 },
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top center',
+        toggleActions: 'play none none none',
+      },
+    });
+
+    tl.fromTo(
+      leftColRef.current?.querySelector('h1'),
+      { opacity: 0, x: -50 },
+      { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }
+    )
+      .fromTo(
+        leftColRef.current?.querySelectorAll('p, .flex'),
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
-          x: 0,
-          duration: 1,
-          ease: 'power3.out',
+          y: 0,
+          duration: 0.8,
           stagger: 0.2,
-          delay: 0.5,
-        }
+          ease: 'power2.out',
+        },
+        '-=0.6'
+      )
+      .fromTo(
+        centerColRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 1, ease: 'elastic.out(1, 0.75)' },
+        'start'
+      )
+      .fromTo(
+        rightColRef.current,
+        { opacity: 0, x: 50 },
+        { opacity: 1, x: 0, duration: 1, ease: 'power3.out' },
+        '<0.2'
       );
-
-      // Button scale animation
-      gsap.fromTo(buttonRef.current,
-        { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: 1, delay: 1, ease: 'power3.out' }
-      );
-
-      // Avatar breathing effect
-      gsap.to(avatarRef.current, {
-        scale: 1.05,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power1.inOut',
-      });
-
-      // Avatar parallax, scale, and rotation effect on scroll
-      gsap.fromTo(avatarRef.current,
-        { y: 0, rotation: 0 },
-        {
-          y: -100,
-          rotation: 5,
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-          },
-        }
-      );
-
-      // Pin the hero section
-      ScrollTrigger.create({
-        trigger: heroRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        pin: true,
-        pinSpacing: false,
-      });
-
-      // Button hover animation
-      if (buttonRef.current) {
-        buttonRef.current.addEventListener('mouseenter', () => {
-          gsap.to(buttonRef.current, { scale: 1.1, duration: 0.3 });
-        });
-        buttonRef.current.addEventListener('mouseleave', () => {
-          gsap.to(buttonRef.current, { scale: 1, duration: 0.3 });
-        });
-      }
-    }
   }, []);
 
   return (
     <section
-      ref={heroRef}
-      className="relative flex items-center justify-center min-h-screen bg-white text-black overflow-hidden"
+      ref={sectionRef}
+      className="relative w-full min-h-screen flex items-center overflow-hidden pt-4 lg:pt-0"
+      style={{
+        backgroundImage: `url('/images/tech-background.svg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
     >
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center p-4 sm:p-8 z-10">
-        <div className="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
-          <h1
-            ref={titleRef}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight text-orange-600"
-          >
-            Rida Rasheed
+      <div className="absolute inset-0 bg-black opacity-70" />
+      <div className="relative container mx-auto flex flex-col lg:flex-row items-center justify-center px-4 sm:px-6 lg:px-8 z-10">
+        <div
+          ref={leftColRef}
+          className="w-full lg:w-1/3 space-y-5 lg:space-y-8 text-center lg:text-left order-2 lg:order-1 lg:pr-8"
+        >
+          <h1 className="font-geist-sans text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight text-white mt-9 lg:mt-0">
+            <span className="text-orange-500">Rida Rasheed</span>
+            <span className="block text-4xl sm:text-5xl lg:text-5xl text-gray-300 mt-2">
+              An experienced full stack web developer
+            </span>
           </h1>
-          <p
-            ref={subtitleRef}
-            className="text-lg sm:text-xl md:text-2xl mb-2 max-w-2xl md:mx-0 mx-auto"
-          >
-            Web Developer
+          <p className="text-md sm:text-lg text-gray-300">
+            I craft beautiful and functional web applications, blending
+            cutting-edge technology with user-centric design. Let's build
+            something amazing together.
           </p>
-          <p ref={paragraphRef} className="text-base sm:text-lg md:text-xl mb-8 max-w-2xl md:mx-0 mx-auto text-gray-700">
-            Passionate about crafting engaging web experiences with a focus on modern technologies and clean code.
-          </p>
-          <button
-            ref={buttonRef}
-            className="px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-bold rounded-full text-base sm:text-lg hover:bg-blue-700 transition-colors duration-300"
-          >
-            Explore My Work
-          </button>
+          <div className="flex items-center justify-center lg:justify-start space-x-6">
+            <a
+              href="https://github.com/1rida" // Placeholder
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-purple-400 transform hover:scale-125 transition-all duration-300"
+            >
+              <FaGithub size={32} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/rida-rasheed-8638402b5/" // Placeholder
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-purple-400 transform hover:scale-125 transition-all duration-300"
+            >
+              <FaLinkedin size={32} />
+            </a>
+            <a
+              href="mailto:ridarasheed58@gmail.com"
+              className="text-gray-400 hover:text-purple-400 transform hover:scale-125 transition-all duration-300"
+            >
+              <FaEnvelope size={32} />
+            </a>
+          </div>
+          <div className="flex items-center justify-center lg:justify-start space-x-4 pt-4">
+            <FaPhoneAlt className="text-purple-400" size={26} />
+            <span className="font-geist-mono text-xl sm:text-2xl tracking-wider text-white">
+              +92 3131040410
+            </span>
+          </div>
         </div>
-        <div className="w-full md:w-1/2 flex justify-center items-center">
-          <div className="w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px] lg:w-[600px] lg:h-[600px]">
+
+        <div
+          ref={centerColRef}
+          className="w-full lg:w-1/3 flex justify-center items-center order-1 lg:order-2"
+        >
+          <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-full lg:h-auto max-w-sm flex justify-center">
             <Image
-              ref={avatarRef}
-              src="/images/redhaired-woman-avatar.jpg"
-              alt="Rida Rasheed Avatar"
-              width={600}
-              height={600}
-              className="w-full h-full rounded-full object-cover"
+              src="/images/myaipic2.png"
+              alt="Rida Rasheed"
+              width={400}
+              height={400}
+              className="object-contain w-full h-full"
             />
+          </div>
+        </div>
+
+        <div
+          ref={rightColRef}
+          className="w-full lg:w-1/3 mt-8 lg:mt-0 order-3 lg:pl-8 flex flex-col items-center lg:items-start"
+        >
+          <p className="text-md sm:text-lg text-gray-300 leading-relaxed text-center lg:text-left">
+            As a dedicated Full Stack Developer, I bring ideas to life with
+            clean and efficient code. My expertise spans across the MERN stack,
+            Next.js, and modern DevOps practices. I am passionate about building
+            scalable solutions and creating seamless user experiences.
+          </p>
+          <div className="relative mt-12 w-full flex-grow flex items-center justify-center overflow-hidden">
+            <div
+              ref={logoContainerRef}
+              className="flex flex-nowrap items-center justify-between w-full gap-2 sm:gap-4 lg:justify-around"
+            >
+              <div className="flex-shrink-0">
+                <Image
+                  src="/images/new_logos/html.svg"
+                  alt="HTML"
+                  width={65}
+                  height={50}
+                  className="object-contain w-10 sm:w-14 h-auto"
+                />
+              </div>
+              <div className="flex-shrink-0">
+                <Image
+                  src="/images/new_logos/css.png"
+                  alt="CSS"
+                  width={50}
+                  height={50}
+                  className="object-contain w-8 sm:w-10 h-auto"
+                />
+              </div>
+              <div className="flex-shrink-0">
+                <Image
+                  src="/images/new_logos/javascript.jpg"
+                  alt="JavaScript"
+                  width={50}
+                  height={50}
+                  className="object-contain w-8 sm:w-10 h-auto"
+                />
+              </div>
+              <div className="flex-shrink-0">
+                <Image
+                  src="/images/new_logos/typescript.svg"
+                  alt="TypeScript"
+                  width={50}
+                  height={50}
+                  className="object-contain w-8 sm:w-10 h-auto"
+                />
+              </div>
+              <div className="flex-shrink-0">
+                <Image
+                  src="/images/new_logos/nextjs.png"
+                  alt="Next.js"
+                  width={60}
+                  height={50}
+                  className="object-contain w-10 sm:w-12 h-auto"
+                />
+              </div>
+              <div className="flex-shrink-0">
+                <Image
+                  src="/images/new_logos/new_logo_2.png"
+                  alt="Tailwind CSS"
+                  width={55}
+                  height={50}
+                  className="object-contain w-9 sm:w-12 h-auto"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
