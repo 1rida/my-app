@@ -68,7 +68,7 @@ const Hero: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex items-center overflow-hidden pt-4 lg:pt-0"
+      className="relative w-full min-h-screen flex items-start lg:items-center overflow-hidden pt-24 pb-12 lg:py-0"
       style={{
         backgroundImage: `url('/images/tech-background.svg')`,
         backgroundSize: 'cover',
@@ -81,7 +81,7 @@ const Hero: React.FC = () => {
           ref={leftColRef}
           className="w-full lg:w-1/3 space-y-5 lg:space-y-8 text-center lg:text-left order-2 lg:order-1 lg:pr-8"
         >
-          <h1 className="font-geist-sans text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight text-white mt-9 lg:mt-0">
+          <h1 className="font-geist-sans text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight text-white mt-6 lg:mt-0">
             <span className="text-orange-500">Rida Rasheed</span>
             <span className="block text-4xl sm:text-5xl lg:text-5xl text-gray-300 mt-2">
               An experienced full stack web developer

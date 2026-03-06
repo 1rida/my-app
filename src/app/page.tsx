@@ -7,6 +7,7 @@ import Hero from '../components/Hero'; // Import the Hero component
 import Marquee from '../components/Marquee'; // Import the Marquee component
 import FeaturedOn from '../components/FeaturedOn'; // Import the FeaturedOn component
 import Services from '../components/Services'; // Import the Services component
+import AboutUs from '../components/AboutUs'; // Import the AboutUs component
 import Process from '../components/Process'; // Import the Process component
 import Footer from '../components/Footer'; // Import the Footer component
 import ContactUs from '../components/ContactUs'; // Import the ContactUs component
@@ -21,6 +22,7 @@ export default function Home() {
 
       <FeaturedOn />
       <Services />
+      <AboutUs />
       <Process />
       <ContactUs />
       <Footer />

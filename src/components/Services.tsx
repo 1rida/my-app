@@ -94,14 +94,14 @@ export default function Services() {
         <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-16">
           I blend creativity with technology to deliver bespoke web solutions. From initial concept to final deployment, every project is a masterpiece in the making.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 md:gap-12">
           {services.map((service, index) => (
             <div
               key={index}
               ref={(el) => { cardsRef.current[index] = el; }}
               className="group bg-gray-800 rounded-xl overflow-hidden relative"
             >
-              <div className="overflow-hidden h-96">
+              <div className="overflow-hidden h-48 sm:h-64 md:h-96">
                 <Image
                   src={service.image}
                   alt={service.title}
@@ -110,9 +110,9 @@ export default function Services() {
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
-              <div className="absolute inset-x-0 bottom-0 h-0 bg-black/70 flex flex-col items-center justify-center p-8 text-center transition-all duration-500 group-hover:h-full">
-                <h3 className="font-geist-sans text-2xl font-bold mb-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">{service.title}</h3>
-                <p className="text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">{service.description}</p>
+              <div className="absolute inset-x-0 bottom-0 h-0 bg-black/70 flex flex-col items-center justify-center p-4 sm:p-8 text-center transition-all duration-500 group-hover:h-full">
+                <h3 className="font-geist-sans text-sm sm:text-2xl font-bold mb-2 sm:mb-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">{service.title}</h3>
+                <p className="text-[10px] sm:text-base text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300 line-clamp-3 sm:line-clamp-none">{service.description}</p>
               </div>
             </div>
           ))}

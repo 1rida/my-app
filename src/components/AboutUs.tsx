@@ -65,7 +65,7 @@ const AboutUs: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-background py-16 sm:py-24">
+    <section id="about" ref={sectionRef} className="bg-background py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div ref={textRef} className="text-center md:text-left">

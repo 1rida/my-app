@@ -77,7 +77,7 @@ const Process: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="process" className="bg-background  sm:py-28">
+    <section ref={sectionRef} id="process" className="bg-background py-24 sm:py-28">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 ref={headingRef} className="text-4xl sm:text-5xl font-extrabold text-center text-foreground mb-16">
           Our <span className="text-orange-500">Development Process</span>
