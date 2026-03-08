@@ -11,6 +11,7 @@ import AboutUs from '../components/AboutUs'; // Import the AboutUs component
 import Process from '../components/Process'; // Import the Process component
 import Footer from '../components/Footer'; // Import the Footer component
 import ContactUs from '../components/ContactUs'; // Import the ContactUs component
+import ChatBot from '../components/ChatBot'; // Import the ChatBot component
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +27,7 @@ export default function Home() {
       <Process />
       <ContactUs />
       <Footer />
+      <ChatBot />
     </main>
   );
 }
