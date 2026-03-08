@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, User, Bot, Loader2 } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, Loader2 } from 'lucide-react';
 import { gsap } from 'gsap';
 
 interface Message {
@@ -58,8 +58,9 @@ export default function ChatBot() {
         throw new Error(data.error || 'Connection failed');
       }
       setMessages(prev => [...prev, { role: 'bot', text: data.text }]);
-    } catch (error: any) {
-      setMessages(prev => [...prev, { role: 'bot', text: `Sorry, I'm having a bit of trouble connecting. Please try again! Error: ${error.message}` }]);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setMessages(prev => [...prev, { role: 'bot', text: `Sorry, I'm having a bit of trouble connecting. Please try again! Error: ${errorMessage}` }]);
     } finally {
       setIsLoading(false);
     }

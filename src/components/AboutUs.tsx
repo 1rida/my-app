@@ -13,55 +13,59 @@ const AboutUs: React.FC = () => {
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (textRef.current && imageRef.current) {
-      gsap.fromTo(
-        textRef.current.querySelector('h2'),
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: textRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
+    const ctx = gsap.context(() => {
+      if (textRef.current && imageRef.current) {
+        gsap.fromTo(
+          textRef.current.querySelector('h2'),
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: textRef.current,
+              start: 'top 80%',
+            },
+          }
+        );
 
-      gsap.fromTo(
-        textRef.current.querySelectorAll('p'),
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: textRef.current,
-            start: 'top 70%',
-          },
-        }
-      );
+        gsap.fromTo(
+          textRef.current.querySelectorAll('p'),
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: textRef.current,
+              start: 'top 70%',
+            },
+          }
+        );
 
-      gsap.fromTo(
-        imageRef.current.querySelectorAll('.image-frame'),
-        { opacity: 0, y: 100, rotation: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          rotation: 0,
-          duration: 1.2,
-          stagger: 0.3,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: imageRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
-    }
+        gsap.fromTo(
+          imageRef.current.querySelectorAll('.image-frame'),
+          { opacity: 0, y: 100, rotation: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            rotation: 0,
+            duration: 1.2,
+            stagger: 0.3,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: imageRef.current,
+              start: 'top 80%',
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (

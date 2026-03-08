@@ -15,52 +15,56 @@ const ContactUs: React.FC = () => {
   const detailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (sectionRef.current) {
-      gsap.fromTo(
-        sectionRef.current.querySelector('h2'),
-        { opacity: 0, y: -50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
+    const ctx = gsap.context(() => {
+      if (sectionRef.current) {
+        gsap.fromTo(
+          sectionRef.current.querySelector('h2'),
+          { opacity: 0, y: -50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+            },
+          }
+        );
 
-      gsap.fromTo(
-        imageRef.current,
-        { opacity: 0, x: -100 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: imageRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
+        gsap.fromTo(
+          imageRef.current,
+          { opacity: 0, x: -100 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: imageRef.current,
+              start: 'top 80%',
+            },
+          }
+        );
 
-      gsap.fromTo(
-        detailsRef.current,
-        { opacity: 0, x: 100 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: detailsRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
-    }
+        gsap.fromTo(
+          detailsRef.current,
+          { opacity: 0, x: 100 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: detailsRef.current,
+              start: 'top 80%',
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (

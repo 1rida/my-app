@@ -77,12 +77,13 @@ export async function POST(request: Request) {
     const result = await chat.sendMessage(prompt);
     const text = result.response.text();
     return NextResponse.json({ text });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Gemini Error:', error);
     // Return a more user-friendly message but log the actual error
     return NextResponse.json({ 
       error: 'I am currently updating my brain. Please try asking again in a moment!',
-      details: error.message 
+      details: errorMessage 
     }, { status: 500 });
   }
 }

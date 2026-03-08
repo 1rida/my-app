@@ -17,58 +17,62 @@ const Hero: React.FC = () => {
   const logoContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (
-      !sectionRef.current ||
-      !leftColRef.current ||
-      !centerColRef.current ||
-      !rightColRef.current
-    ) {
-      return;
-    }
+    const ctx = gsap.context(() => {
+      if (
+        !sectionRef.current ||
+        !leftColRef.current ||
+        !centerColRef.current ||
+        !rightColRef.current
+      ) {
+        return;
+      }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top center',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    tl.fromTo(
-      leftColRef.current?.querySelector('h1'),
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }
-    )
-      .fromTo(
-        leftColRef.current?.querySelectorAll('p, .flex'),
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: 'power2.out',
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top center',
+          toggleActions: 'play none none none',
         },
-        '-=0.6'
+      });
+
+      tl.fromTo(
+        leftColRef.current?.querySelector('h1'),
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }
       )
-      .fromTo(
-        centerColRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 1, ease: 'elastic.out(1, 0.75)' },
-        'start'
-      )
-      .fromTo(
-        rightColRef.current,
-        { opacity: 0, x: 50 },
-        { opacity: 1, x: 0, duration: 1, ease: 'power3.out' },
-        '<0.2'
-      );
+        .fromTo(
+          leftColRef.current?.querySelectorAll('p, .flex'),
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power2.out',
+          },
+          '-=0.6'
+        )
+        .fromTo(
+          centerColRef.current,
+          { opacity: 0, scale: 0.8 },
+          { opacity: 1, scale: 1, duration: 1, ease: 'elastic.out(1, 0.75)' },
+          'start'
+        )
+        .fromTo(
+          rightColRef.current,
+          { opacity: 0, x: 50 },
+          { opacity: 1, x: 0, duration: 1, ease: 'power3.out' },
+          '<0.2'
+        );
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex items-start lg:items-center overflow-hidden pt-24 pb-12 lg:py-0"
+      className="relative w-full min-h-screen flex items-center overflow-hidden pt-28 pb-12 lg:pt-32"
       style={{
         backgroundImage: `url('/images/tech-background.svg')`,
         backgroundSize: 'cover',
